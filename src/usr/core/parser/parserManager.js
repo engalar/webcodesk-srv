@@ -109,7 +109,7 @@ const parseFileData = (filePath, fileData) => {
   const result = [];
   const extName = path.extname(filePath);
   if (validFileExtensions[extName]) {
-    if (filePath.indexOf(config.usrSourceDir) === 0) {
+    if (filePath.indexOf(config.usrSourceDir) === 0 || config.deps.some(dep => filePath.indexOf(dep) === 0)) {
       const baseName = path.basename(filePath, extName);
       if (baseName.endsWith(propTypesFileSuffix)){
         result.push(new DeclarationsInFile(

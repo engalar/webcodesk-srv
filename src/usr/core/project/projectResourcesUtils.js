@@ -111,6 +111,7 @@ export function updateResourceTree (declarationsInFile) {
   const resourceKeysToDelete = [];
   let innerResourcePath =
     declarationsInFile.filePath.replace(`${config.projectRootSourceDir}${constants.FILE_SEPARATOR}`, '');
+    innerResourcePath = innerResourcePath.replace(`${config.projectRootSourceDir}${constants.FILE_SEPARATOR}node_modules${constants.FILE_SEPARATOR}`, '');
   const pathParts = innerResourcePath.split(constants.FILE_SEPARATOR);
 
   let isDirectory;

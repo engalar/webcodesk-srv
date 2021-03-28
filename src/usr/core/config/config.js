@@ -134,7 +134,7 @@ export const initProjectPaths = async () => {
 
   packageConfig = validPaths.packageConfig;
   wcdAppMode = get(packageConfig, 'wcd.appMode', constants.APP_MODE_RELEASE);
-  deps = get(packageConfig, 'emop.deps', []);
+  deps = get(packageConfig, 'emop.deps', []).map(dep => repairPath(path.join(projectDirPath, dep)));
 
   projectName = validPaths.projectName;
 

@@ -57,8 +57,8 @@ function server() {
       presets: ['@babel/env', '@babel/react']
     }))
     .pipe(jsObfuscator({
-      compact: true,
-      sourceMap: false
+      compact: false,
+      sourceMap: true
     }))
     .pipe(dest('./server/srv'));
 }

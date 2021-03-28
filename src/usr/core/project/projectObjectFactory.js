@@ -25,14 +25,14 @@ export function createResourcesTreeViewObject() {
   const userFunctionsRoot = projectResourcesManager.getResourceByKey(constants.GRAPH_MODEL_USER_FUNCTIONS_ROOT_KEY);
 
   const userFunctions = {...userFunctionsRoot.model};
-  const userFunctionsBranch = projectResourcesManager.getUserFunctionsNavigationTree(constants.GRAPH_MODEL_DIR_USR_KEY);
+  const userFunctionsBranch = projectResourcesManager.getUserFunctionsNavigationTree(null/* constants.GRAPH_MODEL_DIR_USR_KEY */);
   if (userFunctionsBranch && userFunctionsBranch.children) {
     userFunctions.children = userFunctionsBranch.children;
   }
   // UserComponents tree starts from "usr" directory we may omit that key on the tree view
   const userComponentsRoot = projectResourcesManager.getResourceByKey(constants.GRAPH_MODEL_COMPONENTS_ROOT_KEY);
   const userComponents = {...userComponentsRoot.model};
-  const userComponentsBranch = projectResourcesManager.getUserComponentsNavigationTree(constants.GRAPH_MODEL_DIR_USR_KEY);
+  const userComponentsBranch = projectResourcesManager.getUserComponentsNavigationTree(null/* constants.GRAPH_MODEL_DIR_USR_KEY */);
   if (userComponentsBranch && userComponentsBranch.children) {
     userComponents.children = userComponentsBranch.children;
   }

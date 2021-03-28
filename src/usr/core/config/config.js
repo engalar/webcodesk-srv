@@ -29,6 +29,7 @@ export let projectDirPath;
 export let packageConfig;
 export let wcdAppMode;
 
+export let deps;
 export let projectName;
 export let projectRootSourceDir;
 export let projectTSConfigFile;
@@ -133,6 +134,7 @@ export const initProjectPaths = async () => {
 
   packageConfig = validPaths.packageConfig;
   wcdAppMode = get(packageConfig, 'wcd.appMode', constants.APP_MODE_RELEASE);
+  deps = get(packageConfig, 'emop.deps', []);
 
   projectName = validPaths.projectName;
 

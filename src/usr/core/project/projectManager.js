@@ -81,9 +81,16 @@ export async function watchUsrSourceDir () {
   projectResourcesManager.initNewResourcesTrees();
   // generate all default files if they are missing
   await projectGenerator.generateDefaultFiles();
+  // generate all dep
+  for (const dep of config.deps) {
+    console.log(dep);
+    await readResource(dep);
+  }
   // read the entire usr directory after a while
+  console.log(config.usrSourceDir);
   await readResource(config.usrSourceDir);
   // read the entire etc directory after a while
+  console.log(config.etcSourceDir);
   await readResource(config.etcSourceDir);
   //
   if (config.wcdAppMode === constants.APP_MODE_DEMO) {

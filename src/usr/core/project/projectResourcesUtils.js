@@ -111,8 +111,20 @@ export function updateResourceTree (declarationsInFile) {
   const resourceKeysToDelete = [];
   let innerResourcePath =
     declarationsInFile.filePath.replace(`${config.projectRootSourceDir}${constants.FILE_SEPARATOR}`, '');
-    innerResourcePath = innerResourcePath.replace(`${config.projectRootSourceDir}${constants.FILE_SEPARATOR}node_modules${constants.FILE_SEPARATOR}`, '');
-  const pathParts = innerResourcePath.split(constants.FILE_SEPARATOR);
+
+  let fixPackPath = innerResourcePath.replace(`${config.projectDirPath}${constants.FILE_SEPARATOR}${constants.NODE_MODULES_DIR_NAME}${constants.FILE_SEPARATOR}`, '');
+  const fixModulePath = fixPackPath;
+  const isInPackage = innerResourcePath !== fixPackPath;
+  if (isInPackage) {
+    const fixPackPathParts = fixPackPath.split(constants.FILE_SEPARATOR);
+    if (fixPackPathParts[2] === constants.DIR_NAME_SRC && fixPackPathParts[3] === constants.DIR_NAME_USR) {
+      fixPackPathParts.splice(2, 2);
+      fixPackPath = fixPackPathParts.join(constants.FILE_SEPARATOR);
+    }
+  }
+  //innerResourcePath = fixPackPath;
+
+  const pathParts = fixPackPath.split(constants.FILE_SEPARATOR);
 
   let isDirectory;
 
@@ -141,9 +153,13 @@ export function updateResourceTree (declarationsInFile) {
       resourceFileModel.props.name = pathParts[d];
       resourceFileModel.props.absolutePath =
         `${config.projectRootSourceDir}${constants.FILE_SEPARATOR}${resourceFileModel.key}`;
+        if(isInPackage){
+          resourceFileModel.props.absolutePath =
+          `${config.projectDirPath}${constants.FILE_SEPARATOR}${constants.NODE_MODULES_DIR_NAME}${constants.FILE_SEPARATOR}${resourceFileModel.key}`;
+        }
     } else {
       resourceFileModel.type = constants.GRAPH_MODEL_FILE_TYPE;
-      const pathParsed = path.parse(innerResourcePath);
+      const pathParsed = path.parse(fixModulePath);
       // we have to remove any file name suffixes
 
       // the name attribute serves as the default import object in indices tree,
@@ -236,6 +252,11 @@ export function updateResourceTree (declarationsInFile) {
 
     if (prevResourceFileModel) {
       prevResourceFileModel.children = prevResourceFileModel.children || [];
+      /* if (((d === 2 || d === 3) && pathParts[2] !== constants.DIR_NAME_SRC && pathParts[3] !== constants.DIR_NAME_USR)) {
+
+      } else {
+        prevResourceFileModel.children.push(resourceFileModel);
+      } */
       prevResourceFileModel.children.push(resourceFileModel);
     } else {
       rootResourceFileModel = resourceFileModel;
